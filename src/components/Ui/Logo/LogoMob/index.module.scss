@@ -1,0 +1,33 @@
+.link {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .link768 {
+    display: block;
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo768 {
+    width: 32px;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .link620 {
+    display: block;
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo620 {
+    width: 32px;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+}

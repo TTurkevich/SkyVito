@@ -1,0 +1,15 @@
+.logo {
+  width: 54px;
+  height: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .link768 {
+    display: none;
+  }
+}
+@media screen and (max-width: 620px) {
+  .link620 {
+    display: none;
+  }
+}/*# sourceMappingURL=index.module.css.map */

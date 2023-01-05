@@ -1,0 +1,40 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: inherit;
+  color: #009ee4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 160px;
+}
+
+.error {
+  font-size: 100px;
+  font-weight: 900;
+  line-height: 30px;
+}
+
+.text {
+  font-size: 40px;
+}
+
+.link {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 620px) {
+  .container {
+    gap: 60px;
+  }
+
+  .text {
+    font-size: 30px;
+  }
+  .error {
+    font-size: 80px;
+  }
+}
