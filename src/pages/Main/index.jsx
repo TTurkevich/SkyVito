@@ -1,25 +1,29 @@
-import Header from '../../components/Header'
+import { useState } from 'react'
+
+import MainHeader from '../../modules/MainHeader'
+import AllGoods from '../../modules/AllGoods'
 import Heading from '../../components/HeadingMain'
-import Cards from '../../components/Cards'
 import Search from '../../components/Search'
 import Footer from '../../components/Footer'
+import Modal from '../../components/modal/Modal'
 
 import classes from './index.module.scss'
 
 const Main = () => {
+  const [openModal, setOpenModal] = useState(false)
+
   return (
     <>
-      <Header className={classes.header} />
+      <MainHeader setOpenModal={setOpenModal} />
       <main className={classes.main}>
         <Search media={620} />
         <div className={classes.container}>
           <Heading className={classes.heading}>Объявления</Heading>
-          <div className={classes.content}>
-            <Cards />
-          </div>
+          <AllGoods />
         </div>
       </main>
-      <Footer className={classes.footer} />
+      <Footer className={classes.footer} setOpenModal={setOpenModal} />
+      <Modal openModal={openModal} setOpenModal={setOpenModal} />
     </>
   )
 }

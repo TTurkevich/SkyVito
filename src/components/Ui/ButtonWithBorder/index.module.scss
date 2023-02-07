@@ -1,0 +1,21 @@
+.button {
+  width: auto;
+  height: 40px;
+  padding: 8px 24px;
+  margin-left: 10px;
+  font-size: 16px;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  background-color: transparent;
+  color: #ffffff;
+  line-height: 1;
+
+  & a {
+    color: #ffffff;
+  }
+}
+
+.button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid #ffffff;
+}

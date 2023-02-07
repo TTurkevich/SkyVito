@@ -1,55 +1,18 @@
-.main {
-  /*padding: 0px 20px 0px 20px;*/
-}
-
 .container {
   max-width: 1178px;
   margin: 0 auto;
   padding: 52px 10px 37px;
 }
 
-.content {
-  width: 100%;
-  margin: 0 auto;
-}
-
 @media screen and (max-width: 620px) {
-  .header {
-    display: none;
-  }
-
   .container {
     padding: 85px 10px 84px;
-  }
-
-  .content {
-    overflow: hidden;
-    position: fixed;
-    right: 0;
-    left: 0;
-    top: 134px;
-    bottom: 84px;
   }
 
   .heading {
     margin-bottom: 20px;
     text-align: center;
     position: relative;
-
-    &::before {
-      content: '';
-      display: block;
-      width: 12px;
-      height: 12px;
-      background-color: transparent;
-      border-top: 2px solid #000000;
-      border-left: 2px solid #000000;
-      transform: rotate(-45deg);
-      position: absolute;
-      top: 9px;
-      left: 13px;
-      cursor: pointer;
-    }
   }
 
   .footer {

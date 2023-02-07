@@ -1,0 +1,3 @@
+export const SERVER_ADDRESS = process.env.REACT_APP_SERVER_ADDRESS
+export const SERVER_PORT = 8090
+export const SERVER_PATH = `${SERVER_ADDRESS}:${SERVER_PORT}`

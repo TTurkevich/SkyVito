@@ -1,235 +1,176 @@
+/* eslint-disable camelcase */
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import cn from 'classnames'
+import { useDispatch, useSelector } from 'react-redux'
 
-import Header from '../../components/Header'
 import Menu from '../../components/Menu'
-import ButtonSmall from '../../components/Ui/ButtonSmall'
+import Button from '../../components/Ui/Button'
 import HeadingSecondary from '../../components/HeadingSecondary'
 import Footer from '../../components/Footer'
+import { Loader } from '../../components/Loader'
+import Message from '../../components/Message'
+import Modal from '../../components/modal/Modal'
+import AdvHeader from '../../modules/AdvHeader'
+import ImagesBlock from '../../modules/ImagesBlock'
+import SellerBlock from '../../modules/SellerBlock'
+import Comments from '../../modules/Comments'
+
+import { useDeleteAdvMutation, useGetAdvQuery } from '../../redux/api/advApi'
+import { selectUser } from '../../features/user/userSlice'
+import { setModal } from '../../features/controls/controlsSlice'
+import { selectComments } from '../../features/adv/advSlice'
+import { setDate } from '../../helpers/helpers'
 
 import classes from './index.module.scss'
 
 const Adv = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { id } = useParams()
+  const { isLoading, isError, error, data: adv } = useGetAdvQuery(parseInt(id, 10))
+  const [deleteAdv] = useDeleteAdvMutation()
+  const user = useSelector(selectUser)
+  const comments = useSelector(selectComments)
+  const [seller, setSeller] = useState(false)
+  const [showPhone, setShowPhone] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+
+  /* useEffect(() => {
+    if (isSuccess) {
+      if (adv.user_id === user.id) {
+        console.log('1', adv.user_id, user.id)
+        setSeller(true)
+      }
+      if (adv.user_id !== user.id) {
+        console.log('2', adv.user_id, user.id)
+        setSeller(false)
+      }
+    }
+    if (user) {
+      if (isSuccess) {
+        if (adv.user_id === user.id) {
+          console.log('3', adv.user_id, user.id)
+          setSeller(true)
+        }
+        if (adv.user_id !== user.id) {
+          console.log('4', adv.user_id, user.id)
+          setSeller(false)
+        }
+      }
+    }
+  }, [user, isSuccess]) */
+
+  useEffect(() => {
+    if (!user) {
+      setSeller(false)
+    }
+    if (user && adv) {
+      if (adv.user_id === user.id) {
+        setSeller(true)
+      } else setSeller(false)
+    }
+  }, [adv, user])
+
+  useEffect(() => {
+    if (isError) {
+      if (error.data.detail) {
+        toast.error(error.data.detail, {
+          position: 'top-right',
+        })
+      } else {
+        toast.error(error.data.message, {
+          position: 'top-right',
+        })
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading])
+
+  if (isLoading) {
+    return <Loader />
+  }
+
+  const handleClick = (e) => {
+    dispatch(setModal(e.target.id))
+    setOpenModal(true)
+  }
+
+  const handleDeleteAdv = () => {
+    deleteAdv(id)
+    navigate('/')
+  }
+
+  const setSellerPhone = () => {
+    if (adv.user.phone === null) {
+      return `${'Нет телефона'}`
+    }
+    return adv.user.phone
+  }
+
+  const openPhone = () => {
+    setShowPhone(!showPhone)
+  }
+
   return (
     <>
-      <Header className={classes.header} />
-      <main>
+      <AdvHeader className={classes.header} setOpenModal={setOpenModal} />
+      <main className={classes.main}>
         <div className={classes.container}>
           <Menu media={768} />
         </div>
-        <div className={classes.artic}>
-          <div className={cn(classes.articContent, classes.article)}>
-            <div className={classes.left}>
-              <div className={classes.fillImg}>
-                <div className={classes.img}>
-                  <img src='' alt='' />
+        {adv === undefined ? (
+          <Message text='Объявление не нашлось' />
+        ) : (
+          <>
+            <div className={classes.artic}>
+              <div className={cn(classes.articContent, classes.article)}>
+                <div className={classes.left}>
+                  <ImagesBlock adv={adv} />
                 </div>
-                <div className={classes.imgBar}>
-                  <div className={classes.imgBarDiv}>
-                    <img src='' alt='' />
-                  </div>
-                  <div className={classes.imgBarDiv}>
-                    <img src='' alt='' />
-                  </div>
-                  <div className={classes.imgBarDiv}>
-                    <img src='' alt='' />
-                  </div>
-                  <div className={classes.imgBarDiv}>
-                    <img src='' alt='' />
-                  </div>
-                  <div className={classes.imgBarDiv}>
-                    <img src='' alt='' />
-                  </div>
-                  <div className={classes.imgBarDiv}>
-                    <img src='' alt='' />
-                  </div>
-                </div>
-                <div className={cn(classes.imgBarMob, classes.imgBarMob)}>
-                  <div className={cn(classes.imgBarMobCircle, classes.circleActive)} />
-                  <div className={classes.imgBarMobCircle} />
-                  <div className={classes.imgBarMobCircle} />
-                  <div className={classes.imgBarMobCircle} />
-                  <div className={classes.imgBarMobCircle} />
-                </div>
-              </div>
-            </div>
-            <div className={classes.right}>
-              <div className={classes.block}>
-                <HeadingSecondary className={classes.itemName}>
-                  Ракетка для большого тенниса Triumph Pro STС Б/У
-                </HeadingSecondary>
-                <div className={classes.info}>
-                  <p className={classes.date}>Сегодня в 10:45</p>
-                  <p className={classes.city}>Санкт-Петербург</p>
-                  <a className={classes.link} href='/' target='_blank'>
-                    23 отзыва
-                  </a>
-                </div>
-                <p className={classes.price}>2 200 ₽</p>
-                <ButtonSmall type='button' className={classes.btn}>
-                  <div>
-                    Показать&nbsp;телефон
-                    <span>8&nbsp;905&nbsp;ХХХ&nbsp;ХХ&nbsp;ХХ</span>
-                  </div>
-                </ButtonSmall>
-                <div className={classes.author}>
-                  <div className={classes.authorImg}>
-                    <img src='' alt='' />
-                  </div>
-                  <div className={classes.cont}>
-                    <p className={classes.name}>Кирилл</p>
-                    <p className={classes.about}>Продает товары с августа 2021</p>
+                <div className={classes.right}>
+                  <div className={classes.block}>
+                    <HeadingSecondary className={classes.itemName}>{adv.title}</HeadingSecondary>
+                    <div className={classes.info}>
+                      <p className={classes.date}>{setDate(adv.created_on)}</p>
+                      <p className={classes.city}>{adv.user.city}</p>
+                      <Comments id={id} setOpenModal={handleClick} />
+                    </div>
+                    <p className={classes.price}>{adv.price} ₽</p>
+                    {seller && (
+                      <div className={classes.sellerButton}>
+                        <Button id='editAdv' type='button' className={classes.btn} onClick={(e) => handleClick(e)}>
+                          Редактировать
+                        </Button>
+                        <Button onClick={handleDeleteAdv} type='button' className={classes.btn}>
+                          Снять с публикации
+                        </Button>
+                      </div>
+                    )}
+                    {!seller && (
+                      <Button onClick={openPhone} type='button' className={classes.btn}>
+                        <div>{showPhone ? <span>{setSellerPhone(adv.user.phone)}</span> : 'Показать телефон'}</div>
+                      </Button>
+                    )}
+                    <SellerBlock id={id} adv={adv} />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className={classes.container}>
-          <HeadingSecondary>Описание товара</HeadingSecondary>
-          <div className={classes.content}>
-            <p className={classes.text}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum.
-            </p>
-          </div>
-        </div>
+            <div className={classes.container}>
+              <HeadingSecondary>Описание товара</HeadingSecondary>
+              <div className={classes.content}>
+                <p className={classes.text}>{adv.description}</p>
+              </div>
+            </div>
+          </>
+        )}
       </main>
-      <Footer className={classes.footer} />
+      <Footer className={classes.footer} setOpenModal={setOpenModal} />
+      <Modal openModal={openModal} setOpenModal={setOpenModal} adv={adv} comments={comments} id={id} />
     </>
   )
 }
 
 export default Adv
-
-/* <div class="wrapper">
-        <div class="container">
-
-        компонент
-            <header class="header">
-                <nav class="header__nav">
-                    <div class="header__logo logo-mob">
-                        <a class="logo-mob__link" href="" target="_blank">
-                            <img class="logo-mob__img" src="img/logo-mob.png" alt="logo">
-                        </a>
-                    </div>
-                    <button class="header__btn-putAd btn-hov01" id="btputAd">Разместить объявление</button>
-                    <button class="header__btn-lk btn-hov01" id="btnlk">Личный кабинет</button>
-                </nav>
-            </header>
-
-            лаяут
-            <main class="main">
-                
-                <div class="main__container">
-
-                       компонент
-                    <div class="main__menu menu">
-                        <a class="menu__logo-link" href="" target="_blank">
-                            <img class="menu__logo-img" src="img/logo.png" alt="logo">
-                        </a>
-                        <form class="menu__form" action="#">                            
-                            <button class="menu__btn-serch btn-hov02" id="btnGoBack">Вернуться на главную</button>
-                        </form>                    
-                    </div>                    
-                </div>
-
-                    <div class="main__artic artic">
-                        <div class="artic__content article">                           
-                            <div class="article__left">
-                                <div class="article__fill-img">
-                                    <div class="article__img">                                        
-                                            <img src="" alt="">                                        
-                                    </div>                                    
-                                    <div class="article__img-bar">
-                                        <div class="article__img-bar-div">
-                                            <img src="" alt="">
-                                        </div>
-                                        <div class="article__img-bar-div">
-                                            <img src="" alt="">
-                                        </div>
-                                        <div class="article__img-bar-div">
-                                            <img src="" alt="">
-                                        </div>
-                                        <div class="article__img-bar-div">
-                                            <img src="" alt="">
-                                        </div>
-                                        <div class="article__img-bar-div">
-                                            <img src="" alt="">
-                                        </div>
-                                        <div class="article__img-bar-div">
-                                            <img src="" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="article__img-bar-mob img-bar-mob">
-                                        <div class="img-bar-mob__circle circle-active"></div>
-                                        <div class="img-bar-mob__circle"></div>
-                                        <div class="img-bar-mob__circle"></div>
-                                        <div class="img-bar-mob__circle"></div>
-                                        <div class="img-bar-mob__circle"></div>
-                                    </div>
-                                </div>                                
-                            </div>
-                            <div class="article__right">
-                                <div class="article__block">
-                                    <h3 class="article__title title">Ракетка для большого тенниса Triumph Pro STС Б/У</h3>
-                                    <div class="article__info">
-                                        <p class="article__date">Сегодня в 10:45</p>
-                                        <p class="article__city">Санкт-Петербург</p>
-                                        <a class="article__link" href="" target="_blank" rel="">23 отзыва</a>
-                                    </div>
-                                    <p class="article__price">2 200 ₽</p>
-                                    <button class="article__btn btn-hov02" >Показать&nbsp;телефон 
-                                        <span>8&nbsp;905&nbsp;ХХХ&nbsp;ХХ&nbsp;ХХ</span>
-                                    </button>
-                                    <div class="article__author author">
-                                        <div class="author__img">
-                                            <img src="" alt="">
-                                        </div>
-                                        <div class="author__cont">
-                                            <p class="author__name">Кирилл</p>
-                                            <p class="author__about">Продает товары с августа 2021</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                <div class="main__container">
-                    <h3 class="main__title title">
-                        Описание товара
-                    </h3>
-                    <div class="main__content">
-                        <p class="main__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                                
-                    </div>
-                    
-                </div>
-                
-            </main>
-            
-            <footer class="footer">
-                <div class="footer__container">
-                    <div class="footer__img">
-                        <a href="" target="_self">
-                            <img src="img/icon_01.png" alt="home">
-                        </a>                        
-                    </div>
-                    <div class="footer__img">
-                        <a href="" target="_self">
-                            <img src="img/icon_02.png" alt="home">
-                        </a>
-                    </div>
-                    <div class="footer__img">
-                        <a href="" target="_self">
-                            <img src="img/icon_03.png" alt="home">
-                        </a>
-                    </div>
-                </div>
-                
-            </footer>
-        </div>
-    </div> */

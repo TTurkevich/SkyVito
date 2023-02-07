@@ -1,13 +1,17 @@
-import { Link } from 'react-router-dom'
-
 import cn from 'classnames'
+import { useNavigate } from 'react-router-dom'
 import classes from './index.module.scss'
 
-const LogoMob = ({ media }) => {
+const LogoMob = ({ media, className, btnClassName }) => {
+  const navigate = useNavigate()
   return (
-    <Link className={cn(classes.link, classes[`link${media}`])} to='/' target='blank'>
-      <img className={cn(classes.logo, classes[`logo${media}`])} src='images/logo-mob.png' alt='logo' />
-    </Link>
+    <button
+      type='button'
+      className={cn(btnClassName, classes.link, classes[`link${media}`])}
+      onClick={() => navigate('/')}
+    >
+      <img className={cn(className, classes.logo, classes[`logo${media}`])} src='/images/logo-mob.png' alt='logo' />
+    </button>
   )
 }
 

@@ -1,0 +1,18 @@
+.message {
+  max-width: 300px;
+  height: auto;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+
+  & h6 {
+    color: #4cd964;
+    font-size: 18px;
+  }
+  & p {
+    color: #009ee4;
+  }
+}

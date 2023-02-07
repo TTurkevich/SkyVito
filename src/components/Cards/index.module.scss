@@ -1,3 +1,8 @@
+.content {
+  width: 100%;
+  margin: 0 auto;
+}
+
 .cards {
   max-width: 1158px;
   width: 100%;
@@ -6,21 +11,7 @@
   grid-auto-rows: 441px;
   grid-gap: 40px 26px;
   justify-content: center;
-  /*overflow-y: auto;*/
-  scrollbar-color: #ffffff #2e2e2e; // Firefox
-  scrollbar-width: thin; // Firefox
-  scrollbar-width: 0px; // Firefox
-  height: 922px;
-
-  &::-webkit-scrollbar {
-    width: 0px;
-    background-color: #009ee4;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #0080c1;
-    border-radius: 3px;
-  }
+  flex: 1 1 auto;
 }
 
 @media screen and (max-width: 1158px) {

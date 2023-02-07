@@ -1,0 +1,56 @@
+.barImages {
+  max-width: 500px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.barImage {
+  width: 500px;
+  align-items: start;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.input {
+  display: none;
+}
+
+.labelImg {
+  width: 500px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  gap: 10px;
+}
+
+.photo {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+.btnClose {
+  position: absolute;
+  top: -3px;
+  right: 1px;
+  width: 15px;
+  height: 17px;
+  background-color: red;
+}

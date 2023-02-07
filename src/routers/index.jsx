@@ -4,10 +4,9 @@ import Layout from '../pages/Layout'
 import Main from '../pages/Main'
 import Profile from '../pages/Profile'
 import Adv from '../pages/Adv'
+import Seller from '../pages/Seller'
 import NotFound from '../pages/NotFound'
-import Signup from '../components/modal/Signup'
-import Login from '../components/modal/Login'
-import NewAdd from '../components/modal/NewAdd'
+import RequireUser from './requireUser'
 
 const Routers = () => {
   return (
@@ -15,11 +14,11 @@ const Routers = () => {
       <Route path='/' element={<Layout />}>
         <Route path='*' element={<NotFound />} />
         <Route index element={<Main />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/adv' element={<Adv />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/newAdd' element={<NewAdd />} />
+        <Route element={<RequireUser allowedRoles={['user', 'admin']} />}>
+          <Route path='/profile' element={<Profile />} />
+        </Route>
+        <Route path='/adv/:id?' element={<Adv />} />
+        <Route path='/adv/:id?/seller/:seller?' element={<Seller />} />
       </Route>
     </Routes>
   )

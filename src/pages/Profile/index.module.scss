@@ -1,16 +1,7 @@
-.main {
-  /*padding: 0px 20px 0px 20px;*/
-}
-
 .container {
   max-width: 1178px;
   margin: 0 auto;
   padding: 0px 10px 79px;
-}
-
-.content {
-  width: 100%;
-  margin: 0 auto;
 }
 
 @media screen and (max-width: 890px) {
@@ -32,6 +23,7 @@
   .container {
     padding: 85px 0px 84px;
   }
+  
   .centerBlock {
     margin: 0 auto;
     padding: 0 20px;
